@@ -4,4 +4,5 @@ from django.http import HttpResponse
 
 class LandingPageView(View):
     def get(self, request):
-        return HttpResponse('<h1>It works!</h1>')
+        ctx = {}
+        return render(request, 'tabletennis/landingpage.html', ctx)
