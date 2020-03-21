@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.http import HttpResponse, JsonResponse
 
+from tabletennis.forms import AddPlayerForm
 from tabletennis.models import Player
 
 class LandingPageView(View):
@@ -12,12 +13,11 @@ class LandingPageView(View):
 class ApiNameAvailability(View):
     def get(self, request):
 
-        name = request.GET.get('name', '')
-        name = name.strip().lower()
-
-        exists = 1 if Player.objects.filter(name__iexact=name).exists() else 0
+        add_player_form = AddPlayerForm(request.GET)
+        add_player_form.is_valid()
+        errors = add_player_form.errors.get('name', '')
 
         return JsonResponse({
-            'name': name,
-            'exists': exists
+            'name': request.GET.get('name', ''),
+            'errors': add_player_form.errors.get('name', [])
         })

@@ -16,11 +16,11 @@ nameInput.addEventListener('input', onInputCheckNameAvailability);
  *   {
  *       'name': str -> The current value of the name input.
  *   }
- *   
+ *
  *   Expected response:
  *   {
  *       'name': str -> The name attribute from the request data,
- *       'exists': int{0,1} -> 0 if name does not yet exist, 1 if it exists
+ *       'errors': list -> list of errors, empty list if none
  *   }
  */
 function onInputCheckNameAvailability(e) {
@@ -40,15 +40,17 @@ function onInputCheckNameAvailability(e) {
 
 function onSuccessOnInputCheckNameAvailability(data) {
 
+    console.log(data)
 	if (nameInput.value !== data.name) {
 		return;
 	}
 
-	if (data.exists === 1) {
-			nameErrorLabel.style.opacity = 1;
-			addPlayerButton.disabled = true;
+	if (data.errors.length > 0) {
+        nameErrorLabel.textContent = data.errors[0];
+        nameErrorLabel.style.opacity = 1;
+        addPlayerButton.disabled = true;
 	} else {
-			nameErrorLabel.style.opacity = 0;
-			addPlayerButton.disabled = false;
+        nameErrorLabel.style.opacity = 0;
+        addPlayerButton.disabled = false;
 	}
 }
