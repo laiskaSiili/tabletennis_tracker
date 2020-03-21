@@ -1,13 +1,21 @@
 {% extends 'tabletennis/base.html' %}
+{% load static %}
 
 {% block css %}
+<link rel="stylesheet" href="{% static 'tabletennis/css/landingpage.css' %}">
 {% endblock %}
 
 {% block js %}
+<script>
+    var apiNameAvailabilityUrl = "{% url 'api_name_availability' %}";
+</script>
+<script src="{% static 'tabletennis/js/landingpage.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 
 <h1>Landing page</h1>
+{% include 'tabletennis/includes/addplayer_modal.html' %}
+
 
 {% endblock %}
