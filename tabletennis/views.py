@@ -12,7 +12,7 @@ class LandingPageView(View):
 class ApiNameAvailability(View):
     def get(self, request):
 
-        name = request.GET.get('name')
+        name = request.GET.get('name', '')
         name = name.strip().lower()
 
         exists = 1 if Player.objects.filter(name__iexact=name).exists() else 0
