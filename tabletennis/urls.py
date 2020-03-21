@@ -1,6 +1,6 @@
 from django.urls import path
-from tabletennis.views import HomeView
+from tabletennis.views import LandingPageView
 
 urlpatterns = [
-    path('', HomeView.as_view(), name='home'),
+    path('', LandingPageView.as_view(), name='landing_page'),
 ]
