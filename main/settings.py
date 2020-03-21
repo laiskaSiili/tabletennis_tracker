@@ -25,7 +25,7 @@ SECRET_KEY = '22id05@3k*pw_iw4t&f*%8)0l#)xhwmwiblgb72pf_0#yul-*y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tabletennis',
 ]
 
 MIDDLEWARE = [
