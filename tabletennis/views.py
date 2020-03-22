@@ -15,7 +15,6 @@ class ApiNameAvailability(View):
 
         add_player_form = AddPlayerForm(request.GET)
         add_player_form.is_valid()
-        errors = add_player_form.errors.get('name', '')
 
         return JsonResponse({
             'name': request.GET.get('name', ''),
