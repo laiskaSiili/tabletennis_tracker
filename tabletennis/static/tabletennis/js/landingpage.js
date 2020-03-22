@@ -3,10 +3,33 @@
 
 // detect changes on add player input
 var nameInput = document.getElementById('name-input');
-var nameErrorLabel = document.getElementById('name-error-label');
+var nameMessageLabel = document.getElementById('name-message-label');
 var addPlayerButton = document.getElementById('add-player-button');
 
 nameInput.addEventListener('input', onInputCheckNameAvailability);
+addPlayerButton.addEventListener('click', onClickAddPlayer);
+
+function onClickAddPlayer(e) {
+
+    $.ajax({
+        method: 'POST',
+        url: addPlayerUrl, // defined in landigpage.html by django template engine
+        dataType: 'json',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+        data: {
+            'name': nameInput.value
+        },
+        success: onSuccessOnClickAddPlayer,
+        error: function() {console.log('ERROR')},
+    });
+}
+
+function onSuccessOnClickAddPlayer(data) {
+    updateAndShowMessageLabel(data);
+    nameInput.value = '';
+}
 
 /**
  * onInputCheckNameAvailability
@@ -27,7 +50,7 @@ function onInputCheckNameAvailability(e) {
 
     $.ajax({
         method: 'GET',
-        url: apiNameAvailabilityUrl, // defined in landigpage.html by django template engine
+        url: addPlayerUrl, // defined in landigpage.html by django template engine
         dataType: 'json',
         data: {
             'name': nameInput.value
@@ -40,17 +63,34 @@ function onInputCheckNameAvailability(e) {
 
 function onSuccessOnInputCheckNameAvailability(data) {
 
-    console.log(data)
 	if (nameInput.value !== data.name) {
 		return;
 	}
 
-	if (data.errors.length > 0) {
-        nameErrorLabel.textContent = data.errors[0];
-        nameErrorLabel.style.opacity = 1;
+	updateAndShowMessageLabel(data);
+}
+
+
+function updateAndShowMessageLabel(data) {
+
+
+    if (data.message.messageType === 'ERROR') {
+        nameMessageLabel.classList.remove('text-success')
+        nameMessageLabel.classList.add('text-danger')
         addPlayerButton.disabled = true;
-	} else {
-        nameErrorLabel.style.opacity = 0;
+    } else {
+        nameMessageLabel.classList.remove('text-danger')
+        nameMessageLabel.classList.add('text-success')
         addPlayerButton.disabled = false;
-	}
+    }
+    
+    nameMessageLabel.textContent = data.message.content;
+
+    if (nameMessageLabel.textContent === 'NOMESSAGE') {
+        nameMessageLabel.style.opacity = 0;
+    }
+    else {
+        nameMessageLabel.style.opacity = 1;
+    }
+
 }
