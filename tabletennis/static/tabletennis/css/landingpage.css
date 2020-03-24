@@ -1,4 +1,7 @@
-#name-error-label {
-    opacity: 0;
-    transition: opacity 0.3s linear;
+.message-container {
+    position: relative;
+}
+
+.message-container span {
+    position: absolute;
 }
