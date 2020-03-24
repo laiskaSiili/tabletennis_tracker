@@ -9,8 +9,23 @@ var addPlayerButton = document.getElementById('add-player-button');
 nameInput.addEventListener('input', onInputCheckNameAvailability);
 addPlayerButton.addEventListener('click', onClickAddPlayer);
 
+/**
+ * Send a POST request to django to create a new player.
+ *   Request:
+ *   {
+ *       'name': str -> The current value of the name input and the name of the player to be created.
+ *   }
+ *
+ *   Expected response:
+ *   {
+ *       'name': str -> The name attribute from the request data,
+ *       'message': {
+ *          'messageType': str {'SUCCESS', 'ERROR', 'HIDDEN'}, -> status used to render corresponding HTML element.
+ *          'content': str -> Message to be displayed by HTML element.
+ *      }
+ *   }
+ */
 function onClickAddPlayer(e) {
-
     $.ajax({
         method: 'POST',
         url: addPlayerUrl, // defined in landigpage.html by django template engine
@@ -21,20 +36,13 @@ function onClickAddPlayer(e) {
         data: {
             'name': nameInput.value
         },
-        success: onSuccessOnClickAddPlayer,
+        success: onSuccessAddAndCheckPlayer,
         error: function() {console.log('ERROR')},
     });
 }
 
-function onSuccessOnClickAddPlayer(data) {
-    updateAndShowMessageLabel(data);
-    nameInput.value = '';
-}
-
 /**
- * onInputCheckNameAvailability
  * Send a GET request to django, asking whether a player with name of current value exists.
- *   We want to receive a JSON response of the form.
  *   Request:
  *   {
  *       'name': str -> The current value of the name input.
@@ -43,11 +51,13 @@ function onSuccessOnClickAddPlayer(data) {
  *   Expected response:
  *   {
  *       'name': str -> The name attribute from the request data,
- *       'errors': list -> list of errors, empty list if none
+ *       'message': {
+ *          'messageType': str {'SUCCESS', 'ERROR', 'HIDDEN'}, -> status used to render corresponding HTML element.
+ *          'content': str -> Message to be displayed by HTML element.
+ *      }
  *   }
  */
 function onInputCheckNameAvailability(e) {
-
     $.ajax({
         method: 'GET',
         url: addPlayerUrl, // defined in landigpage.html by django template engine
@@ -55,42 +65,43 @@ function onInputCheckNameAvailability(e) {
         data: {
             'name': nameInput.value
         },
-        success: onSuccessOnInputCheckNameAvailability,
+        success: onSuccessAddAndCheckPlayer,
         error: function() {console.log('ERROR')},
     });
 
 }
 
-function onSuccessOnInputCheckNameAvailability(data) {
+/**
+ * Called upon successful ajax response from onInputCheckNameAvailability() and onClickAddPlayer().
+ * Display message based on a messageType: HIDDEN->no message, SUCCESS->green content, ERROR->red content.
+ * @param {*} responseData The response JSON in the form of :
+ *   {
+ *       'name': str -> The name attribute from the request data,
+ *       'message': {
+ *          'messageType': str {'SUCCESS', 'ERROR', 'HIDDEN'}, -> status used to render corresponding HTML element.
+ *          'content': str -> Message to be displayed by HTML element.
+ *      }
+ *   }
+ */
+function onSuccessAddAndCheckPlayer(responseData) {
 
-	if (nameInput.value !== data.name) {
+    // Bail out if name input has already changed in the time it took the response to arrive.
+    if (nameInput.value !== responseData.name) {
 		return;
 	}
 
-	updateAndShowMessageLabel(data);
-}
+    let messageType = responseData.message.messageType;
+    let content = responseData.message.content;
 
-
-function updateAndShowMessageLabel(data) {
-
-
-    if (data.message.messageType === 'ERROR') {
-        nameMessageLabel.classList.remove('text-success')
-        nameMessageLabel.classList.add('text-danger')
-        addPlayerButton.disabled = true;
-    } else {
-        nameMessageLabel.classList.remove('text-danger')
-        nameMessageLabel.classList.add('text-success')
+    if (messageType === 'HIDDEN') {
+        showMessage('#name-input-message-container', '&nbsp;', '');
         addPlayerButton.disabled = false;
-    }
-    
-    nameMessageLabel.textContent = data.message.content;
-
-    if (nameMessageLabel.textContent === 'NOMESSAGE') {
-        nameMessageLabel.style.opacity = 0;
-    }
-    else {
-        nameMessageLabel.style.opacity = 1;
+    } else if (messageType === 'ERROR') {
+        showMessage('#name-input-message-container', content, 'text-danger');
+        addPlayerButton.disabled = true;
+    } else if (messageType === 'SUCCESS') {
+        showMessage('#name-input-message-container', content, 'text-success');
+        nameInput.value = '';
     }
 
 }
