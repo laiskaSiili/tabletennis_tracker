@@ -43,3 +43,16 @@ class AddPlayerView(View):
                 'content': content
             }
         })
+
+
+class AddGameView(View):
+    def get(self, request):
+        # What to put here?...
+        name = request.GET.get('name', '').strip().lower()
+
+        autocomplete_choices = list(Player.objects.filter(name__istartswith=name).order_by('name').values_list('name', flat=True))
+        
+        return JsonResponse({
+            'name': name,
+            'autocomplete_choices': autocomplete_choices,
+        })

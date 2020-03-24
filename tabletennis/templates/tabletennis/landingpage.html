@@ -8,15 +8,28 @@
 {% block js %}
 <script>
     var addPlayerUrl = "{% url 'add_player_view' %}";
+    var addGameUrl = "{% url 'add_game_view' %}";
 </script>
 <script src="{% static 'tabletennis/js/utils.js' %}"></script>
-<script src="{% static 'tabletennis/js/landingpage.js' %}"></script>
+<script src="{% static 'tabletennis/js/addplayer.js' %}"></script>
+<script src="{% static 'tabletennis/js/addgame.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 
-<h1>Landing page</h1>
 {% include 'tabletennis/includes/addplayer_modal.html' %}
+{% include 'tabletennis/includes/addgame_modal.html' %}
+
+<!-- Button trigger add player modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPlayerModal">
+    Add player
+</button>
+
+<!-- Button trigger add game modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addGameModal">
+    Add game
+</button>
+
 
 
 {% endblock %}
