@@ -14,7 +14,7 @@ class AddPlayerView(View):
     def get(self, request):
         add_player_form = AddPlayerForm(request.GET)
         messageType = 'NOERROR' if add_player_form.is_valid() else 'ERROR'
-        content = add_player_form.errors.get('name', ['This name is free!'])[0]
+        content = add_player_form.errors.get('name', ['This name is available!'])[0]
 
         return JsonResponse({
             'name': request.GET.get('name', ''),
@@ -50,8 +50,8 @@ class AddGameView(View):
     def get(self, request):
         # What to put here?...
         name = request.GET.get('name', '').strip().lower()
-
-        autocomplete_choices = list(Player.objects.filter(name__istartswith=name).order_by('name').values_list('name', flat=True))
+        
+        autocomplete_choices = [] if not name else list(Player.objects.filter(name__istartswith=name).order_by('name').values_list('name', flat=True))
 
         return JsonResponse({
             'name': name,

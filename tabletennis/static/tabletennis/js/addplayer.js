@@ -9,6 +9,11 @@ var addPlayerButton = document.getElementById('add-player-button');
 nameInput.addEventListener('input', onInputCheckNameAvailability);
 addPlayerButton.addEventListener('click', onClickAddPlayer);
 
+// When modal is closed, we want to remove data
+$('body').on('hidden.bs.modal', '#addPlayerModal', function () {
+    console.log('test')
+});
+
 /**
  * Send a POST request to django to create a new player.
  *   Request:

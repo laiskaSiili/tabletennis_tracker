@@ -29,3 +29,11 @@ class Player(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Game(models.Model):
+    winner = models.ForeignKey(Player, related_name='games_won', on_delete=models.SET_NULL, blank=False, null=True, help_text='Winning player')
+    loser = models.ForeignKey(Player, related_name='games_lost', on_delete=models.SET_NULL, blank=False, null=True, help_text='Losing player')
+    winner_score = models.IntegerField(blank=False, null=False, help_text='Score of the winning player')
+    loser_score = models.IntegerField(blank=False, null=False, help_text='Score of the losing player')
+    timestamp = models.DateTimeField(auto_now_add=True)

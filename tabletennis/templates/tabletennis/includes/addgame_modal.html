@@ -1,28 +1,62 @@
 <!-- Addd game modal -->
 <div class="modal fade" id="addGameModal" tabindex="-1" role="dialog" aria-labelledby="addGameModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="addGameModalLabel">Add new game</h5>
       </div>
       <div class="modal-body">
 
-        <div class="autocomplete-container">
-          <input class="autocomplete-input form-control" type="text" aria-describedby="player1name" autocomplete="off">
-          <div class="show fade autocomplete-dropdown-outer">
-            <div class="px-3 py-2 autocomplete-dropdown-inner">
+        <div class="container-fluid">
+          <div class="row">
+
+            <div class="col-lg-6 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="">Player 1</span>
+                </div>
+                <div class="autocomplete-container d-inline-block">
+                  <input class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="off">
+                  <div class="show fade autocomplete-dropdown-outer">
+                    <div class="autocomplete-dropdown-inner">
+                    </div>
+                  </div>
+                </div>
+                <input type="number" placeholder="Score" class="form-control">
+              </div>
             </div>
+
+            <div class="col-lg-6">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="">Player 2</span>
+                </div>
+                <div class="autocomplete-container d-inline-block">
+                  <input class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="off">
+                  <div class="show fade autocomplete-dropdown-outer">
+                    <div class="autocomplete-dropdown-inner">
+                    </div>
+                  </div>
+                </div>
+                <input type="number" placeholder="Score" class="form-control">
+              </div>
+            </div>
+
           </div>
         </div>
 
-        
-        <div class="autocomplete-container">
-          <input class="autocomplete-input form-control" type="text" aria-describedby="player1name" autocomplete="off">
-          <div class="show fade autocomplete-dropdown-outer">
-            <div class="px-3 py-2 autocomplete-dropdown-inner">
+        <!--
+
+          <div class="autocomplete-container">
+            <input class="autocomplete-input form-control" type="text" aria-describedby="player1name" autocomplete="off">
+            <div class="show fade autocomplete-dropdown-outer">
+              <div class="px-3 py-2 autocomplete-dropdown-inner">
+              </div>
             </div>
           </div>
-        </div>
+
+        -->
+
 
       </div>
       <div class="modal-footer">

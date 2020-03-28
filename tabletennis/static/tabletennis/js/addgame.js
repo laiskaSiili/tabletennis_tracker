@@ -41,6 +41,6 @@ function onInputDisplayAutoComplete(responseData, targetInput) {
         }
 
         for (var choice of responseData.autocomplete_choices) {
-            $(`<p class="m-0">${choice}</p>`).appendTo(dropdown);
+            $(`<p class="m-0 px-3 py-2">${choice}</p>`).appendTo(dropdown);
         }
 }
