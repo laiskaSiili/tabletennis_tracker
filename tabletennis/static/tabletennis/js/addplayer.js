@@ -93,14 +93,15 @@ function onSuccessAddAndCheckPlayer(responseData) {
     let messageType = responseData.message.messageType;
     let content = responseData.message.content;
 
-    if (messageType === 'HIDDEN') {
-        showMessage('#name-input-message-container', '&nbsp;', '');
-        addPlayerButton.disabled = false;
-    } else if (messageType === 'ERROR') {
+    if (messageType === 'ERROR') {
         showMessage('#name-input-message-container', content, 'text-danger');
         addPlayerButton.disabled = true;
-    } else if (messageType === 'SUCCESS') {
+    } else if (messageType === 'NOERROR') {
         showMessage('#name-input-message-container', content, 'text-success');
+        addPlayerButton.disabled = false;
+    } else if (messageType === 'PLAYERADDED') {
+        showMessage('#name-input-message-container', content, 'text-success');
+        addPlayerButton.disabled = false;
         nameInput.value = '';
     }
 
