@@ -3,11 +3,19 @@
 
 // detect changes on add player input
 $('.autocomplete-container input').on('input', onInputCheckAutoComplete);
-$('.autocomplete-container input').on('focusout', onFocusoutEmptyDropdown);
+$('.autocomplete-container input').on('focusin', onAutocompleteFocusin);
+$('.autocomplete-container input').on('focusout', onAutocompleteFocusout);
 
-function onFocusoutEmptyDropdown(e) {
-    var targetInput = e.target;
-    $(targetInput).parent().find('.autocomplete-dropdown-inner').empty();
+
+function onAutocompleteFocusin(e) {
+    var autoCompleteContainer = $(e.target).parent();
+    autoCompleteContainer.css('z-index', 3); // simulate bootstrap css when input has focus. Apply to container, because this holds input.
+}
+
+function onAutocompleteFocusout(e) {
+    var autoCompleteContainer = $(e.target).parent();
+    autoCompleteContainer.css('z-index', 0); // simulate bootstrap css when input has focus. Apply to container, because this holds input.
+    autoCompleteContainer.find('.autocomplete-dropdown-inner').empty();
 }
 
 function onInputCheckAutoComplete(e) {
@@ -41,6 +49,6 @@ function onInputDisplayAutoComplete(responseData, targetInput) {
         dropdown.empty();
 
         for (var choice of responseData.autocomplete_choices) {
-            $(`<p class="m-0 px-3 py-2">${choice}</p>`).appendTo(dropdown);
+            $(`<p class="m-0 px-3 py-1">${choice}</p>`).appendTo(dropdown);
         }
 }

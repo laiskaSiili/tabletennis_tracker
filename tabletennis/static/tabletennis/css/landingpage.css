@@ -14,17 +14,27 @@
 
 .autocomplete-dropdown-inner {
     position: absolute;
-    /*width: 50%;*/
-    transition: height 0.15s ease-in-out;
-    transition: opacity 0.15s ease-in-out;
+    width: 100%;
+    z-index: 10;
 }
 
 .autocomplete-dropdown-inner p {
-    transition: all 0.15s ease-in-out;
-    z-index: 2000;
-    background: lightgray;
+    background: #e9ecef;
+    border: 1px solid white;
+    border-top: none;
 }
 
 .autocomplete-dropdown-inner p:hover {
     background: blueviolet
+}
+
+.input-group>.autocomplete-container:not(:first-child) .form-control {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.input-group>.autocomplete-container:not(:last-child) .form-control {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: none;
 }
