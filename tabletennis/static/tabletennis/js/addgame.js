@@ -29,16 +29,10 @@ function onInputDisplayAutoComplete(responseData, targetInput) {
         if (targetInput.value !== responseData.name) {
             return;
         }
-    
+
         // Add logic to add p elements here
         var dropdown = $(targetInput).parent().find('.autocomplete-dropdown-inner');
         dropdown.empty();
-
-        if (responseData.autocomplete_choices.length == 0) {
-            dropdown.fadeTo(0);
-        } else {
-            dropdown.fadeTo(1);
-        }
 
         for (var choice of responseData.autocomplete_choices) {
             $(`<p class="m-0 px-3 py-2">${choice}</p>`).appendTo(dropdown);
