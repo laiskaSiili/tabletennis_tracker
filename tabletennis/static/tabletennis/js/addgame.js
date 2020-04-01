@@ -3,6 +3,12 @@
 
 // detect changes on add player input
 $('.autocomplete-container input').on('input', onInputCheckAutoComplete);
+$('.autocomplete-container input').on('focusout', onFocusoutEmptyDropdown);
+
+function onFocusoutEmptyDropdown(e) {
+    var targetInput = e.target;
+    $(targetInput).parent().find('.autocomplete-dropdown-inner').empty();
+}
 
 function onInputCheckAutoComplete(e) {
     var targetInput = e.target;
