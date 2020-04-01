@@ -19,6 +19,7 @@ function resetAddPlayerModalContent() {
     showMessage('#name-input-message-container', 'Add a player name...', 'text-muted');
 }
 
+
 /**
  * Send a POST request to django to create a new player.
  *   Request:

@@ -1,3 +1,8 @@
+/* General */
+.no-pointer {
+    pointer-events: none;
+}
+
 /* Add player modal */
 .message-container {
     position: relative;
@@ -22,10 +27,11 @@
     background: #e9ecef;
     border: 1px solid white;
     border-top: none;
+    cursor: pointer;
 }
 
 .autocomplete-dropdown-inner p:hover {
-    background: blueviolet
+    background: lightgrey;
 }
 
 .input-group>.autocomplete-container:not(:first-child) .form-control {

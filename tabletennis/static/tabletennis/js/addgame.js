@@ -6,16 +6,27 @@ $('.autocomplete-container input').on('input', onInputCheckAutoComplete);
 $('.autocomplete-container input').on('focusin', onAutocompleteFocusin);
 $('.autocomplete-container input').on('focusout', onAutocompleteFocusout);
 
+$('.autocomplete-dropdown-inner').on('click', 'p', onAutocompleteClick);
+
+
+function onAutocompleteClick(e) {
+    var clickedSuggestion = e.target;
+    var autocompleteInput = $(clickedSuggestion).parents('.autocomplete-container').find('input');
+    autocompleteInput.val(clickedSuggestion.textContent);
+}
 
 function onAutocompleteFocusin(e) {
     var autoCompleteContainer = $(e.target).parent();
     autoCompleteContainer.css('z-index', 3); // simulate bootstrap css when input has focus. Apply to container, because this holds input.
+    autoCompleteContainer.find('.autocomplete-dropdown-inner').empty();
+    autoCompleteContainer.find('.autocomplete-dropdown-inner').fadeIn(250);
 }
 
 function onAutocompleteFocusout(e) {
     var autoCompleteContainer = $(e.target).parent();
-    autoCompleteContainer.css('z-index', 0); // simulate bootstrap css when input has focus. Apply to container, because this holds input.
-    autoCompleteContainer.find('.autocomplete-dropdown-inner').empty();
+    autoCompleteContainer.find('.autocomplete-dropdown-inner').fadeOut(250, function() {
+        autoCompleteContainer.css('z-index', 0); // simulate bootstrap css when input has focus. Apply to container, because this holds input.
+    });
 }
 
 function onInputCheckAutoComplete(e) {
@@ -48,7 +59,12 @@ function onInputDisplayAutoComplete(responseData, targetInput) {
         var dropdown = $(targetInput).parent().find('.autocomplete-dropdown-inner');
         dropdown.empty();
 
-        for (var choice of responseData.autocomplete_choices) {
-            $(`<p class="m-0 px-3 py-1">${choice}</p>`).appendTo(dropdown);
+        if (responseData.autocomplete_choices.length === 0) {
+            $(`<p class="no-pointer m-0 px-3 py-1">No matches found...</p>`).appendTo(dropdown);
+        } else {
+            for (var choice of responseData.autocomplete_choices) {
+                $(`<p class="m-0 px-3 py-1">${choice}</p>`).appendTo(dropdown);
+            }
         }
+
 }

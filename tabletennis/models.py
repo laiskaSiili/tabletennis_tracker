@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 
 class PlayerManager(models.Manager):
     """
@@ -27,6 +28,11 @@ class Player(models.Model):
 
     objects = PlayerManager()
 
+    def clean(self):
+        super().clean()
+        if self.name.lower().startswith('no matches'):
+            raise ValidationError({'name': 'Haha, you funny bunny!'})
+
     def __str__(self):
         return self.name
 
@@ -34,6 +40,8 @@ class Player(models.Model):
 class Game(models.Model):
     winner = models.ForeignKey(Player, related_name='games_won', on_delete=models.SET_NULL, blank=False, null=True, help_text='Winning player')
     loser = models.ForeignKey(Player, related_name='games_lost', on_delete=models.SET_NULL, blank=False, null=True, help_text='Losing player')
-    winner_score = models.IntegerField(blank=False, null=False, help_text='Score of the winning player')
-    loser_score = models.IntegerField(blank=False, null=False, help_text='Score of the losing player')
+    winner_score = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(0)], help_text='Score of the winning player')
+    loser_score = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(0)], help_text='Score of the losing player')
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    # ToDo: overwrite the clean method to validate score pairs

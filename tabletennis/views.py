@@ -41,7 +41,6 @@ class AddPlayerView(View):
             'message': {
                 'messageType': messageType,
                 'content': content,
-
             }
         })
 
@@ -49,16 +48,13 @@ class AddPlayerView(View):
 class AddGameView(View):
     def get(self, request):
         # What to put here?...
-        name = request.GET.get('name', '').strip().lower()
+        name = request.GET.get('name', '')
+        cleaned_name = name.strip().lower()
         
-        autocomplete_choices = [] if not name else list(Player.objects.filter(name__istartswith=name).order_by('name').values_list('name', flat=True))
+        autocomplete_choices = [] if not name else list(Player.objects.filter(name__istartswith=cleaned_name).order_by('name').values_list('name', flat=True))
 
-        if len(autocomplete_choices) == 0:
-            autocomplete_choices.append('No matches found...')
-        elif len(autocomplete_choices) > 5:
-            n_choices_ignored = len(autocomplete_choices) - 5
-            autocomplete_choices = autocomplete_choices[:5]
-            autocomplete_choices.append(f'[and {n_choices_ignored} more ...]')
+        if len(autocomplete_choices) > 3:
+            autocomplete_choices = autocomplete_choices[:3]
 
         return JsonResponse({
             'name': name,
