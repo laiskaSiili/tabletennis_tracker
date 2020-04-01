@@ -3,7 +3,6 @@
 
 // detect changes on add player input
 var nameInput = document.getElementById('name-input');
-var nameMessageLabel = document.getElementById('name-message-label');
 var addPlayerButton = document.getElementById('add-player-button');
 
 nameInput.addEventListener('input', onInputCheckNameAvailability);
