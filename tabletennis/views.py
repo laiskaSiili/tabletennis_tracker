@@ -1,6 +1,8 @@
+from django.db.models.functions import Lower
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
-from django.http import HttpResponse, JsonResponse
+
 
 from tabletennis.forms import AddPlayerForm
 from tabletennis.models import Player
@@ -51,10 +53,10 @@ class AddGameView(View):
         name = request.GET.get('name', '')
         cleaned_name = name.strip().lower()
         
-        autocomplete_choices = [] if not name else list(Player.objects.filter(name__istartswith=cleaned_name).order_by('name').values_list('name', flat=True))
+        autocomplete_choices = [] if not name else list(Player.objects.filter(name__istartswith=cleaned_name).order_by(Lower('name')).values_list('name', flat=True))
 
-        if len(autocomplete_choices) > 3:
-            autocomplete_choices = autocomplete_choices[:3]
+        # Pass over only the top 3
+        autocomplete_choices = autocomplete_choices[:3]
 
         return JsonResponse({
             'name': name,
