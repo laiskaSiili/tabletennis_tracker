@@ -3,8 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
 
-
-from tabletennis.forms import AddPlayerForm
+from tabletennis.forms import AddPlayerForm, AddGameForm
 from tabletennis.models import Player
 
 class LandingPageView(View):
@@ -61,4 +60,20 @@ class AddGameView(View):
         return JsonResponse({
             'name': name,
             'autocomplete_choices': autocomplete_choices,
+        })
+
+    def post(self, request):
+        add_game_form = AddGameForm(request.POST)
+        if add_game_form.is_valid():
+            field_errors = []
+            non_field_errors = []
+            first_form_error = ''
+        else:
+            field_errors = list(add_game_form.errors.values())
+            non_field_errors = add_game_form.non_field_errors()
+            first_form_error = (field_errors + non_field_errors)[0]
+        return JsonResponse({
+            'all_errors': (field_errors + non_field_errors),
+            'first_error': first_form_error,
+            'winner': add_game_form.cleaned_data.get('winner'),
         })

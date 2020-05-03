@@ -1,5 +1,8 @@
 'use strict';
 
+/*
+    CHECK NAMES
+*/
 
 // detect changes on add player input
 $('.autocomplete-container input').on('input', onInputCheckAutoComplete);
@@ -66,4 +69,32 @@ function onSuccessOnInputCheckAutoComplete(responseData, targetInput) {
             }
         }
 
+}
+
+/*
+    SUBMIT GAME
+*/
+$('#add-game-button').on('click', addGame);
+
+function addGame() {
+    $.ajax({
+        method: 'POST',
+        url: addGameUrl, // defined in landigpage.html by django template engine
+        dataType: 'json',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+        data: {
+            'winner': $('#addgame_winner').val(),
+            'winner_score': $('#addgame_winner_score').val(),
+            'loser': $('#addgame_loser').val(),
+            'loser_score': $('#addgame_loser_score').val(),
+        },
+        success: onSuccessAddGame,
+        error: function() {console.log('ERROR')},
+    });
+}
+
+function onSuccessAddGame(responseData) {
+    console.log(responseData);
 }
