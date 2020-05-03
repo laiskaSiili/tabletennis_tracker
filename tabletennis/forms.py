@@ -16,19 +16,19 @@ class AddGameForm(forms.ModelForm):
         fields = ['winner', 'loser', 'winner_score', 'loser_score']
 
     def clean(self):
+        """
+        1) Call clean super (which also calls model clean)
+            - Model validation: Winner score >= 11.
+            - Model validaton: Loser score >= 0.
+            - Model validation: self.winner_score < self.loser_score + 2
+            - Model validation: self.winner_score > 11 and self.winner_score != self.loser_score + 2
+        2) Make sure both player names exist as player objects.
+        """
+        # 1) Call clean super
         cleaned_data = super().clean()
 
-        # 0) UI does not distinguish between winner and loser. So compare scores here and swap if needed.
-        if cleaned_data.get('winner_score'):
-            pass
-
-        # 1) Make sure both player names exist as Player objects
+        # 2) Make sure both player names exist as Player objects
         if not Player.objects.filter(name=cleaned_data.get('winner')).exists():
-            self.add_error('winner', 'Please enter an existing playername.')
+            raise forms.ValidationError(f'Invalid playername: {data.get("winner")}')
         if not Player.objects.filter(name=cleaned_data.get('loser')).exists():
-            self.add_error('loser', 'Please enter an existing playername.')
-        
-        # 2) Allow no negative score
-        # --> This is handled on the Game model fields using validators.
-
-        # 3) If one score is exactly 11 or 21, check that other 
+            raise forms.ValidationError(f'Invalid playername: {data.get("loser")}')

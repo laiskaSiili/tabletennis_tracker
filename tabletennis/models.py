@@ -40,13 +40,17 @@ class Player(models.Model):
 class Game(models.Model):
     winner = models.ForeignKey(Player, related_name='games_won', on_delete=models.SET_NULL, blank=False, null=True, help_text='Winning player')
     loser = models.ForeignKey(Player, related_name='games_lost', on_delete=models.SET_NULL, blank=False, null=True, help_text='Losing player')
-    winner_score = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(11)], help_text='Score of the winning player')
-    loser_score = models.IntegerField(blank=False, null=False, validators=[MinValueValidator(0)], help_text='Score of the losing player')
+    winner_score = models.IntegerField(blank=False, null=False, help_text='Score of the winning player')
+    loser_score = models.IntegerField(blank=False, null=False, help_text='Score of the losing player')
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
-        super().clean()       
-        if self.winner_score < self.loser_score + 2:
+        super().clean()
+        if self.winner_score < 11:
+            raise ValidationError('Winner score must not be lower than 11 points.')
+        elif self.loser_score < 0:
+            raise ValidationError('Loser score must not be lower than 0 points.')
+        elif self.winner_score < self.loser_score + 2:
             raise ValidationError('The winning player needs to have at least 2 more points than the losing player.')
         elif self.winner_score > 11 and self.winner_score != self.loser_score + 2:
             raise ValidationError('After a deuce, the winning player needs to have exactly 2 more points than the losing player.')

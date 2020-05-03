@@ -8,7 +8,6 @@ $('.autocomplete-container input').on('focusout', onAutocompleteFocusout);
 
 $('.autocomplete-dropdown-inner').on('click', 'p', onAutocompleteClick);
 
-
 function onAutocompleteClick(e) {
     var clickedSuggestion = e.target;
     var autocompleteInput = $(clickedSuggestion).parents('.autocomplete-container').find('input');
@@ -42,13 +41,13 @@ function onInputCheckAutoComplete(e) {
             'name': targetInput.value
         },
         success: function(responseData) {
-            onInputDisplayAutoComplete(responseData, targetInput);
+            onSuccessOnInputCheckAutoComplete(responseData, targetInput);
         },
         error: function() {console.log('ERROR')},
     });
 }
 
-function onInputDisplayAutoComplete(responseData, targetInput) {
+function onSuccessOnInputCheckAutoComplete(responseData, targetInput) {
 
         // Bail out if name input has already changed in the time it took the response to arrive.
         if (targetInput.value !== responseData.name) {

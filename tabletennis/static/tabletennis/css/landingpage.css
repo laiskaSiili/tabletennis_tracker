@@ -13,6 +13,10 @@
 }
 
 /* Add game modal */
+#addGameModal .input-group-text {
+    width: 80px;
+}
+
 .autocomplete-dropdown-outer {
     position: relative;
 }

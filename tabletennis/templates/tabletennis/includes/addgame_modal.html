@@ -13,50 +13,41 @@
             <div class="col-lg-6 mb-3">
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="">Player 1</span>
+                  <span class="input-group-text">Winner</span>
                 </div>
                 <div class="autocomplete-container d-inline-block">
-                  <input class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="nope" placeholder="Name">
+                  <input name="winner" class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="nope" placeholder="Name">
                   <div class="autocomplete-dropdown-outer">
                     <div class="autocomplete-dropdown-inner">
                     </div>
                   </div>
                 </div>
-                <input type="number" placeholder="Score" class="form-control">
+                <input name="winner_score" type="number" placeholder="Score" class="form-control">
               </div>
             </div>
 
             <div class="col-lg-6">
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="">Player 2</span>
+                  <span class="input-group-text">Loser</span>
                 </div>
                 <div class="autocomplete-container d-inline-block">
-                  <input class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="nope" placeholder="Name">
+                  <input name="loser" class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="nope" placeholder="Name">
                   <div class="show fade autocomplete-dropdown-outer">
                     <div class="autocomplete-dropdown-inner">
                     </div>
                   </div>
                 </div>
-                <input type="number" placeholder="Score" class="form-control">
+                <input name="loser_score" type="number" placeholder="Score" class="form-control">
               </div>
+            </div>
+
+            <div class="col-12">
+              <div id="game-add-message-container" class="message-container"></div>
             </div>
 
           </div>
         </div>
-
-        <!--
-
-          <div class="autocomplete-container">
-            <input class="autocomplete-input form-control" type="text" aria-describedby="player1name" autocomplete="off">
-            <div class="show fade autocomplete-dropdown-outer">
-              <div class="px-3 py-2 autocomplete-dropdown-inner">
-              </div>
-            </div>
-          </div>
-
-        -->
-
 
       </div>
       <div class="modal-footer">
