@@ -20,8 +20,8 @@ class AddGameForm(forms.ModelForm):
         1) Call clean super (which also calls model clean)
             - Model validation: Winner score >= 11.
             - Model validaton: Loser score >= 0.
-            - Model validation: self.winner_score < self.loser_score + 2
-            - Model validation: self.winner_score > 11 and self.winner_score != self.loser_score + 2
+            - Model validation: self.winner_score >= self.loser_score + 2
+            - Model validation: self.winner_score > 11 and self.winner_score == self.loser_score + 2
         2) Make sure both player names exist as player objects.
         """
         # 1) Call clean super
