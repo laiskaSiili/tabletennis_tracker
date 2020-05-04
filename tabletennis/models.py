@@ -46,11 +46,11 @@ class Game(models.Model):
 
     def clean(self):
         super().clean()
-        if self.winner_score < 11:
+        if self.winner_score and self.winner_score < 11:
             raise ValidationError('Winner score must not be lower than 11 points.')
-        elif self.loser_score < 0:
+        elif self.loser_score and self.loser_score < 0:
             raise ValidationError('Loser score must not be lower than 0 points.')
-        elif self.winner_score < self.loser_score + 2:
+        elif self.winner_score and self.loser_score and self.winner_score < self.loser_score + 2:
             raise ValidationError('The winning player needs to have at least 2 more points than the losing player.')
-        elif self.winner_score > 11 and self.winner_score != self.loser_score + 2:
+        elif self.winner_score and self.loser_score and self.winner_score > 11 and self.winner_score != self.loser_score + 2:
             raise ValidationError('After a deuce, the winning player needs to have exactly 2 more points than the losing player.')

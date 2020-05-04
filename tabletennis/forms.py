@@ -15,6 +15,25 @@ class AddGameForm(forms.ModelForm):
         model = Game
         fields = ['winner', 'loser', 'winner_score', 'loser_score']
 
+        error_messages = {
+            'winner': {
+                'invalid_choice': 'Invalid winner name.',
+                'required': 'Player names are required.'
+            },
+            'loser': {
+                'invalid_choice': 'Invalid loser name.',
+                'required': 'Player names are required.'
+            },
+            'winner_score': {
+                'invalid': 'Winner score must be a whole number.',
+                'required': 'Scores are required.'
+            },
+            'loser_score': {
+                'invalid': 'Loser score must be a whole number.',
+                'required': 'Scores are required.'
+            }
+        }
+
     def clean_winner(self):
         winner = self.cleaned_data.get('winner')
         if not Player.objects.filter(name=winner).exists():
