@@ -34,14 +34,14 @@ class AddGameForm(forms.ModelForm):
             }
         }
 
-    def clean_winner(self):
-        winner = self.cleaned_data.get('winner')
-        if not Player.objects.filter(name=winner).exists():
-            raise forms.ValidationError(f'Invalid winner name: {winner}')
-        return Player.objects.get(name=winner)
+    def __init__(self, data, **kwargs):
+        data = data.copy()
+        winner = data.get('winner')
+        if winner and Player.objects.filter(name=winner).exists():
+            data['winner'] = Player.objects.get(name=winner)
+        loser = data.get('loser')
+        if loser and Player.objects.filter(name=loser).exists():
+            data['loser'] = Player.objects.get(name=loser)
 
-    def clean_loser(self):
-        loser = self.cleaned_data.get('loser')
-        if not Player.objects.filter(name=loser).exists():
-            raise forms.ValidationError(f'Invalid loser name: {loser}')
-        return Player.objects.get(name=loser)
+        super().__init__(data, **kwargs)
+
