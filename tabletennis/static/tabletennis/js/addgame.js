@@ -1,6 +1,18 @@
 'use strict';
 
 /*
+    RESET MODAL
+*/
+
+$(document).ready(resetAddGameModalContent);
+$('body').on('hidden.bs.modal', '#addGameModal', resetAddGameModalContent);
+
+function resetAddGameModalContent() {
+    $("#addGameForm")[0].reset();
+    $('#add-game-message-container').empty();
+}
+
+/*
     CHECK NAMES
 */
 
