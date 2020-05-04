@@ -37,9 +37,6 @@ function onInputCheckAutoComplete(e) {
         method: 'GET',
         url: addGameUrl, // defined in landigpage.html by django template engine
         dataType: 'json',
-        headers: {
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-        },
         data: {
             'name': targetInput.value
         },

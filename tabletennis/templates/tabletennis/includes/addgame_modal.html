@@ -1,59 +1,57 @@
 <!-- Addd game modal -->
 <div class="modal fade" id="addGameModal" tabindex="-1" role="dialog" aria-labelledby="addGameModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addGameModalLabel">Add new game</h5>
-      </div>
-      <div class="modal-body">
-
-        <div class="container-fluid">
-          <div class="row">
-
-            <div class="col-lg-6 mb-3">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Winner</span>
-                </div>
-                <div class="autocomplete-container d-inline-block">
-                  <input id="addgame_winner" class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="nope" placeholder="Name">
-                  <div class="autocomplete-dropdown-outer">
-                    <div class="autocomplete-dropdown-inner">
-                    </div>
-                  </div>
-                </div>
-                <input id="addgame_winner_score" type="number" placeholder="Score" class="form-control">
-              </div>
-            </div>
-
-            <div class="col-lg-6">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">Loser</span>
-                </div>
-                <div class="autocomplete-container d-inline-block">
-                  <input id="addgame_loser" class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="nope" placeholder="Name">
-                  <div class="show fade autocomplete-dropdown-outer">
-                    <div class="autocomplete-dropdown-inner">
-                    </div>
-                  </div>
-                </div>
-                <input id="addgame_loser_score" type="number" placeholder="Score" class="form-control">
-              </div>
-            </div>
-
-            <div class="col-12">
-              <div id="game-add-message-container" class="message-container"></div>
-            </div>
-
-          </div>
+      <form id="addGameForm" action="" method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="addGameModalLabel">Add new game</h5>
         </div>
+        <div class="modal-body">
 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="add-game-button" type="button" class="btn btn-primary">Add game</button>
-      </div>
+          <div class="container-fluid">
+            <div class="row">
+
+              <div class="col-lg-6 mb-3">
+                <div class="input-group">
+                  <div class="autocomplete-container d-inline-block">
+                    <input name="winner" class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="nope" placeholder="Winner name">
+                    <div class="autocomplete-dropdown-outer">
+                      <div class="autocomplete-dropdown-inner">
+                      </div>
+                    </div>
+                  </div>
+                  <input name="winner_score" type="number" placeholder="Score" class="form-control">
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="input-group">
+                  <div class="autocomplete-container d-inline-block">
+                    <input name="loser" class="autocomplete-input form-control" type="text" aria-describedby="playername" autocomplete="nope" placeholder="Loser name">
+                    <div class="show fade autocomplete-dropdown-outer">
+                      <div class="autocomplete-dropdown-inner">
+                      </div>
+                    </div>
+                  </div>
+                  <input name="loser_score" type="number" placeholder="Score" class="form-control">
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div id="add-game-message-container" class="message-container"></div>
+                <br>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="add-game-button" type="submit" class="btn btn-primary">Add game</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

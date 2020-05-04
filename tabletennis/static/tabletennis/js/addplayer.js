@@ -6,7 +6,6 @@ var nameInput = document.getElementById('name-input');
 var addPlayerButton = document.getElementById('add-player-button');
 
 nameInput.addEventListener('input', onInputCheckNameAvailability);
-addPlayerButton.addEventListener('click', onClickAddPlayer);
 
 
 // When page is loaded and when modal is closed, reset modal content
@@ -14,9 +13,9 @@ $(document).ready(resetAddPlayerModalContent);
 $('body').on('hidden.bs.modal', '#addPlayerModal', resetAddPlayerModalContent);
 
 function resetAddPlayerModalContent() {
-    nameInput.value = '';
+    $("#addPlayerForm")[0].reset();
+    $('#name-input-message-container').empty();
     addPlayerButton.disabled = false;
-    showMessage('#name-input-message-container', 'Add a player name...', 'text-muted');
 }
 
 
@@ -36,21 +35,21 @@ function resetAddPlayerModalContent() {
  *      }
  *   }
  */
-function onClickAddPlayer(e) {
+$("#addPlayerForm").submit(addPlayer);
+
+function addPlayer(e) {
+    e.preventDefault();
+    var serializedData = $(this).serialize();
     $.ajax({
-        method: 'POST',
-        url: addPlayerUrl, // defined in landigpage.html by django template engine
+        type : 'POST',
+        url :  addPlayerUrl, // defined in landigpage.html by django template engine
+        data : serializedData,
         dataType: 'json',
-        headers: {
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-        },
-        data: {
-            'name': nameInput.value
-        },
-        success: onSuccessAddAndCheckPlayer,
-        error: function() {console.log('ERROR')},
+        success : onSuccessAddAndCheckPlayer,
+        error : function(response){console.log(`ERROR: ${response}`)}
     });
 }
+
 
 /**
  * Send a GET request to django, asking whether a player with name of current value exists.
@@ -79,11 +78,10 @@ function onInputCheckNameAvailability(e) {
         success: onSuccessAddAndCheckPlayer,
         error: function() {console.log('ERROR')},
     });
-
 }
 
 /**
- * Called upon successful ajax response from onInputCheckNameAvailability() and onClickAddPlayer().
+ * Called upon successful ajax response from onInputCheckNameAvailability() and addPlayer().
  * Display message based on a messageType: HIDDEN->no message, SUCCESS->green content, ERROR->red content.
  * @param {*} responseData The response JSON in the form of :
  *   {

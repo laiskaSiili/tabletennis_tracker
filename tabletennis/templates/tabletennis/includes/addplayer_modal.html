@@ -2,18 +2,21 @@
 <div class="modal fade" id="addPlayerModal" tabindex="-1" role="dialog" aria-labelledby="addPlayerModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addPlayerModalLabel">Add new player</h5>
-      </div>
-      <div class="modal-body">
-        <input id="name-input" type="text" class="form-control" aria-describedby="playername" autocomplete="nope">
-        <div id="name-input-message-container" class="message-container"></div>
-        <br>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="add-player-button" type="button" class="btn btn-primary">Add player</button>
-      </div>
+      <form id="addPlayerForm" action="" method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="addPlayerModalLabel">Add new player</h5>
+        </div>
+        <div class="modal-body">
+          <input id="name-input" name="name" type="text" class="form-control" aria-describedby="playername" autocomplete="nope" placeholder="Player name">
+          <div id="name-input-message-container" class="message-container"></div>
+          <br>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="add-player-button" type="submit" class="btn btn-primary">Add player</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
