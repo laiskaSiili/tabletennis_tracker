@@ -51,7 +51,7 @@ class AddGameView(View):
         # What to put here?...
         name = request.GET.get('name', '')
         cleaned_name = name.strip().lower()
-        
+
         autocomplete_choices = [] if not name else list(Player.objects.filter(name__istartswith=cleaned_name).order_by(Lower('name')).values_list('name', flat=True))
 
         # Pass over only the top 3
@@ -65,15 +65,18 @@ class AddGameView(View):
     def post(self, request):
         add_game_form = AddGameForm(request.POST)
         if add_game_form.is_valid():
-            field_errors = []
-            non_field_errors = []
-            first_form_error = ''
+            content = 'Game successfully added!'
+            messageType = 'GAMEADDED'
         else:
-            field_errors = list(add_game_form.errors.values())
-            non_field_errors = add_game_form.non_field_errors()
-            first_form_error = (field_errors + non_field_errors)[0]
+            errors = []
+            for field_error in add_game_form.errors.values():
+                errors.extend(field_error)
+            errors.extend(add_game_form.non_field_errors())
+            content = errors[0]
+            messageType = 'ERROR'
         return JsonResponse({
-            'all_errors': (field_errors + non_field_errors),
-            'first_error': first_form_error,
-            'winner': add_game_form.cleaned_data.get('winner'),
+            'message': {
+                'messageType': messageType,
+                'content': content,
+            }
         })

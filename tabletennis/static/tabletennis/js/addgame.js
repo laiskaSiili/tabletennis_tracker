@@ -71,27 +71,30 @@ function onSuccessOnInputCheckAutoComplete(responseData, targetInput) {
 /*
     SUBMIT GAME
 */
-$('#add-game-button').on('click', addGame);
+$("#addGameForm").submit(addGame);
 
-function addGame() {
+function addGame(e) {
+    e.preventDefault();
+    var serializedData = $(this).serialize();
     $.ajax({
-        method: 'POST',
-        url: addGameUrl, // defined in landigpage.html by django template engine
+        type : 'POST',
+        url :  addGameUrl, // defined in landigpage.html by django template engine
+        data : serializedData,
         dataType: 'json',
-        headers: {
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-        },
-        data: {
-            'winner': $('#addgame_winner').val(),
-            'winner_score': $('#addgame_winner_score').val(),
-            'loser': $('#addgame_loser').val(),
-            'loser_score': $('#addgame_loser_score').val(),
-        },
-        success: onSuccessAddGame,
-        error: function() {console.log('ERROR')},
+        success : onSuccessAddGame,
+        error : function(response){console.log(`ERROR: ${response}`)}
     });
 }
 
 function onSuccessAddGame(responseData) {
-    console.log(responseData);
+
+    let messageType = responseData.message.messageType;
+    let content = responseData.message.content;
+
+    if (messageType === 'ERROR') {
+        showMessage('#add-game-message-container', content, 'text-danger');
+    } else if (messageType === 'GAMEADDED') {
+        $("#addGameForm")[0].reset();
+        showMessage('#add-game-message-container', content, 'text-success');
+    }
 }
